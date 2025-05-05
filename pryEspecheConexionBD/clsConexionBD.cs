@@ -13,13 +13,11 @@ namespace pryEspecheConexionBD
     internal class clsConexionBD
     {
         //cadena de conexion
-        string cadenaConexion = "Server=localhost\\SQLEXPRESS;Database=Ventas2;Trusted_Connection=True;";
-
-
-        //conector
+        string cadenaConexion = "Server=localhost\\SQLEXPRESS;Database=Comercio;Trusted_Connection=True;";
+ 
         SqlConnection coneccionBaseDatos;
 
-        //comando
+
         SqlCommand comandoBaseDatos;
 
         public string nombreBaseDeDatos;
@@ -39,35 +37,35 @@ namespace pryEspecheConexionBD
             }
             catch (Exception error)
             {
-                MessageBox.Show("Tiene un error " + error.Message);
+                MessageBox.Show("Tiene un errorcito - " + error.Message);
             }
 
         }
+
         public DataTable ObtenerContactos()
         {
             DataTable tablaContactos = new DataTable();
 
             try
             {
-                using (coneccionBaseDatos = new SqlConnection(cadenaConexion))
+                using (SqlConnection conexion = new SqlConnection(cadenaConexion))
                 {
-                    coneccionBaseDatos.Open();
-                    string consulta = "SELECT * FROM dbo.Contactos";
-                    SqlDataAdapter adaptador = new SqlDataAdapter(consulta, coneccionBaseDatos);
-                    adaptador.Fill(tablaContactos);
-                }
+                    conexion.Open();
 
-                MessageBox.Show("Filas obtenidas: " + tablaContactos.Rows.Count);
+                    string consulta = "SELECT * FROM Productos";
+
+                    using (SqlDataAdapter adaptador = new SqlDataAdapter(consulta, conexion))
+                    {
+                        adaptador.Fill(tablaContactos);
+                    }
+                }
             }
-            catch (Exception error)
+            catch (Exception ex)
             {
-                MessageBox.Show("Error al obtener datos: " + error.Message);
+                MessageBox.Show("Error al obtener los Productos: " + ex.Message);
             }
 
             return tablaContactos;
         }
-
     }
 }
-
-
